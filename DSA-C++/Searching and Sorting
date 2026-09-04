@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <chrono>
+#include <algorithm>
 using namespace std;
 using namespace std::chrono;
 
@@ -20,7 +21,7 @@ int main()
     cout << "Enter number of students: ";
     cin >> n;
 
-    // Dynamic memory
+    // Dynamic Memory Allocation
     for(int i = 0; i < n; i++)
     {
         s = (Student*)realloc(s, (i + 1) * sizeof(Student));
@@ -29,14 +30,19 @@ int main()
         cin >> s[i].id >> s[i].name >> s[i].cgpa;
     }
 
-    // Display
+    // Display Students
     cout << "\nID\tName\tCGPA\n";
+
     for(int i = 0; i < n; i++)
-        cout << s[i].id << "\t" << s[i].name << "\t"
+    {
+        cout << s[i].id << "\t"
+             << s[i].name << "\t"
              << s[i].cgpa << endl;
+    }
 
     // Linear Search
     int key, pos = -1;
+
     cout << "\nEnter ID for Linear Search: ";
     cin >> key;
 
@@ -58,47 +64,72 @@ int main()
     else
         cout << "Record Not Found\n";
 
-    auto linearTime = duration_cast<nanoseconds>(stop - start);
+    auto linearTime =
+        duration_cast<nanoseconds>(stop - start);
 
     // Bubble Sort by Name
-    for(int i = 0; i < n-1; i++)
-        for(int j = 0; j < n-i-1; j++)
-            if(strcmp(s[j].name, s[j+1].name) > 0)
-                swap(s[j], s[j+1]);
+    for(int i = 0; i < n - 1; i++)
+    {
+        for(int j = 0; j < n - i - 1; j++)
+        {
+            if(strcmp(s[j].name, s[j + 1].name) > 0)
+            {
+                swap(s[j], s[j + 1]);
+            }
+        }
+    }
 
     cout << "\nSorted by Name:\n";
+
     for(int i = 0; i < n; i++)
-        cout << s[i].id << "\t" << s[i].name << "\t"
+    {
+        cout << s[i].id << "\t"
+             << s[i].name << "\t"
              << s[i].cgpa << endl;
+    }
 
     // Selection Sort by CGPA
-    for(int i = 0; i < n-1; i++)
+    for(int i = 0; i < n - 1; i++)
     {
         int min = i;
 
-        for(int j = i+1; j < n; j++)
+        for(int j = i + 1; j < n; j++)
+        {
             if(s[j].cgpa < s[min].cgpa)
                 min = j;
+        }
 
         swap(s[i], s[min]);
     }
 
     cout << "\nSorted by CGPA:\n";
+
     for(int i = 0; i < n; i++)
-        cout << s[i].id << "\t" << s[i].name << "\t"
+    {
+        cout << s[i].id << "\t"
+             << s[i].name << "\t"
              << s[i].cgpa << endl;
+    }
 
     // Sort by ID for Binary Search
-    for(int i = 0; i < n-1; i++)
-        for(int j = 0; j < n-i-1; j++)
-            if(s[j].id > s[j+1].id)
-                swap(s[j], s[j+1]);
+    for(int i = 0; i < n - 1; i++)
+    {
+        for(int j = 0; j < n - i - 1; j++)
+        {
+            if(s[j].id > s[j + 1].id)
+            {
+                swap(s[j], s[j + 1]);
+            }
+        }
+    }
 
     // Binary Search
     pos = -1;
+
     start = high_resolution_clock::now();
 
-    int low = 0, high = n-1;
+    int low = 0;
+    int high = n - 1;
 
     while(low <= high)
     {
@@ -110,9 +141,13 @@ int main()
             break;
         }
         else if(key < s[mid].id)
+        {
             high = mid - 1;
+        }
         else
+        {
             low = mid + 1;
+        }
     }
 
     stop = high_resolution_clock::now();
@@ -121,3 +156,23 @@ int main()
         cout << "\nBinary Search: Record Found\n";
     else
         cout << "\nBinary Search: Record Not Found\n";
+
+    auto binaryTime =
+        duration_cast<nanoseconds>(stop - start);
+
+    // Performance Comparison
+    cout << "\n--- Search Performance ---\n";
+
+    cout << "Linear Search : "
+         << linearTime.count()
+         << " ns\n";
+
+    cout << "Binary Search : "
+         << binaryTime.count()
+         << " ns\n";
+
+    // Free Memory
+    free(s);
+
+    return 0;
+}

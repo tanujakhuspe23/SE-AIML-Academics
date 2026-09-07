@@ -1,0 +1,175 @@
+package OOP;
+
+import java.util.Scanner;
+
+class Employee {
+    String empName;
+    int empId;
+    String address;
+    String mailId;
+    String mobileNo;
+    double basicPay;
+
+    Employee(String empName, int empId, String address,
+             String mailId, String mobileNo, double basicPay) {
+
+        this.empName = empName;
+        this.empId = empId;
+        this.address = address;
+        this.mailId = mailId;
+        this.mobileNo = mobileNo;
+        this.basicPay = basicPay;
+    }
+
+    void generateSalarySlip(String designation) {
+
+        double da = basicPay * 0.97;
+        double hra = basicPay * 0.10;
+
+        double pf = basicPay * 0.12;
+        double staffClubFund = basicPay * 0.001;
+
+        double grossSalary = basicPay + da + hra;
+        double totalDeduction = pf + staffClubFund;
+        double netSalary = grossSalary - totalDeduction;
+
+        System.out.println("\n=================================");
+        System.out.println("          SALARY SLIP");
+        System.out.println("=================================");
+        System.out.println("Designation : " + designation);
+        System.out.println("Employee ID : " + empId);
+        System.out.println("Name        : " + empName);
+        System.out.println("Address     : " + address);
+        System.out.println("Mail ID     : " + mailId);
+        System.out.println("Mobile No   : " + mobileNo);
+        System.out.println("---------------------------------");
+        System.out.println("Basic Pay   : " + basicPay);
+        System.out.println("DA (97%)    : " + da);
+        System.out.println("HRA (10%)   : " + hra);
+        System.out.println("---------------------------------");
+        System.out.println("Gross Salary: " + grossSalary);
+        System.out.println("---------------------------------");
+        System.out.println("PF (12%)    : " + pf);
+        System.out.println("Staff Fund  : " + staffClubFund);
+        System.out.println("---------------------------------");
+        System.out.println("Total Deduction: " + totalDeduction);
+        System.out.println("Net Salary    : " + netSalary);
+        System.out.println("=================================");
+    }
+}
+
+class Programmer extends Employee {
+
+    Programmer(String name, int id, String address,
+               String mail, String mobile, double basicPay) {
+
+        super(name, id, address, mail, mobile, basicPay);
+    }
+}
+
+class TeamLead extends Employee {
+
+    TeamLead(String name, int id, String address,
+             String mail, String mobile, double basicPay) {
+
+        super(name, id, address, mail, mobile, basicPay);
+    }
+}
+
+class AssistantProjectManager extends Employee {
+
+    AssistantProjectManager(String name, int id, String address,
+                            String mail, String mobile, double basicPay) {
+
+        super(name, id, address, mail, mobile, basicPay);
+    }
+}
+
+class ProjectManager extends Employee {
+
+    ProjectManager(String name, int id, String address,
+                   String mail, String mobile, double basicPay) {
+
+        super(name, id, address, mail, mobile, basicPay);
+    }
+}
+
+public class EmployeeSalary3 {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number of employees: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        for (int i = 1; i <= n; i++) {
+
+            System.out.println("\n--- Employee " + i + " ---");
+
+            System.out.println("1. Programmer");
+            System.out.println("2. Team Lead");
+            System.out.println("3. Assistant Project Manager");
+            System.out.println("4. Project Manager");
+
+            System.out.print("Enter designation: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter Employee Name: ");
+            String name = sc.nextLine();
+
+            System.out.print("Enter Employee ID: ");
+            int id = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter Address: ");
+            String address = sc.nextLine();
+
+            System.out.print("Enter Mail ID: ");
+            String mail = sc.nextLine();
+
+            System.out.print("Enter Mobile Number: ");
+            String mobile = sc.nextLine();
+
+            System.out.print("Enter Basic Pay: ");
+            double basicPay = sc.nextDouble();
+            sc.nextLine();
+
+            Employee emp;
+
+            switch (choice) {
+
+                case 1:
+                    emp = new Programmer(name, id, address,
+                            mail, mobile, basicPay);
+                    emp.generateSalarySlip("Programmer");
+                    break;
+
+                case 2:
+                    emp = new TeamLead(name, id, address,
+                            mail, mobile, basicPay);
+                    emp.generateSalarySlip("Team Lead");
+                    break;
+
+                case 3:
+                    emp = new AssistantProjectManager(name, id, address,
+                            mail, mobile, basicPay);
+                    emp.generateSalarySlip("Assistant Project Manager");
+                    break;
+
+                case 4:
+                    emp = new ProjectManager(name, id, address,
+                            mail, mobile, basicPay);
+                    emp.generateSalarySlip("Project Manager");
+                    break;
+
+                default:
+                    System.out.println("Invalid designation!");
+            }
+        }
+
+        sc.close();
+    }
+}

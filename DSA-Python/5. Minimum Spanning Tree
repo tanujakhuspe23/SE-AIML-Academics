@@ -1,0 +1,100 @@
+# Minimum Spanning Tree
+
+departments = ["CSE", "AIML", "Electrical", "ENTC", "Mechanical"]
+
+edges = [
+    (10, "CSE", "AIML"),
+    (20, "CSE", "Electrical"),
+    (30, "CSE", "ENTC"),
+    (40, "AIML", "Electrical"),
+    (50, "AIML", "Mechanical"),
+    (60, "Electrical", "ENTC"),
+    (70, "Electrical", "Mechanical"),
+    (80, "ENTC", "Mechanical")
+]
+
+# Kruskal's Algorithm
+def kruskal():
+    parent = {}
+
+    for department in departments:
+        parent[department] = department
+
+    def find(department):
+        while parent[department] != department:
+            department = parent[department]
+        return department
+
+    def union(department1, department2):
+        parent[find(department1)] = find(department2)
+
+    cost = 0
+    count = 0
+
+    print("\nKruskal's Algorithm")
+
+    for distance, department1, department2 in sorted(edges):
+        if find(department1) != find(department2):
+            print(department1, "--", department2, "=", distance)
+            cost += distance
+            count += 1
+            union(department1, department2)
+
+        if count == len(departments) - 1:
+            break
+
+    print("Minimum Cost =", cost)
+
+
+# Prim's Algorithm
+def prim():
+    selected = ["CSE"]
+    cost = 0
+
+    print("\nPrim's Algorithm")
+
+    while len(selected) < len(departments):
+        minimum = 999
+        selected_department = ""
+        new_department = ""
+
+        for distance, department1, department2 in edges:
+            if department1 in selected and department2 not in selected:
+                if distance < minimum:
+                    minimum = distance
+                    selected_department = department1
+                    new_department = department2
+
+            elif department2 in selected and department1 not in selected:
+                if distance < minimum:
+                    minimum = distance
+                    selected_department = department2
+                    new_department = department1
+
+        print(selected_department, "--", new_department, "=", minimum)
+        cost += minimum
+        selected.append(new_department)
+
+    print("Minimum Cost =", cost)
+
+
+# Main Program
+while True:
+    print("\n1. Prim's Algorithm")
+    print("2. Kruskal's Algorithm")
+    print("3. Exit")
+
+    choice = int(input("Enter Choice: "))
+
+    if choice == 1:
+        prim()
+
+    elif choice == 2:
+        kruskal()
+
+    elif choice == 3:
+        print("Program Ended")
+        break
+
+    else:
+        print("Invalid Choice")

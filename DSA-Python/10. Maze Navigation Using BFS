@@ -1,0 +1,57 @@
+maze = [
+    [0, 0, 1, 0],
+    [1, 0, 1, 0],
+    [0, 0, 0, 0],
+    [1, 1, 1, 0]
+]
+
+start = (0, 0)
+goal = (3, 3)
+
+queue = [start]
+visited = []
+parent = {}
+
+while queue:
+    r, c = queue.pop(0)
+
+    if (r, c) == goal:
+        break
+
+    visited.append((r, c))
+
+    for dr, dc in [(0,1), (1,0), (0,-1), (-1,0)]:
+        nr, nc = r + dr, c + dc
+
+        if 0 <= nr < 4 and 0 <= nc < 4:
+            if maze[nr][nc] == 0 and (nr,nc) not in visited and (nr,nc) not in queue:
+                queue.append((nr,nc))
+                parent[(nr,nc)] = (r,c)
+
+path = []
+
+if (r, c) == goal:
+    while (r, c) != start:
+        path.append((r, c))
+        r, c = parent[(r, c)]
+
+    path.append(start)
+    path.reverse()
+
+    print("Path Found:", path)
+
+    path_cost = len(path) - 1
+    print("Path Cost:", path_cost)
+
+    for r, c in path:
+        if (r, c) != start and (r, c) != goal:
+            maze[r][c] = "*"
+
+    maze[0][0] = "S"
+    maze[3][3] = "G"
+
+    print("Maze:")
+    for row in maze:
+        print(row)
+else:
+    print("Path Not Found")

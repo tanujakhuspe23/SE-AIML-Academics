@@ -1,0 +1,87 @@
+package oop_practicals;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class p7{
+
+   // Generic method to count elements satisfying a condition
+   public static<T>int countElements(
+           List<T>list, java.util.function.Predicate<T>condition) {
+
+       int count = 0;
+
+       for (T element : list) {
+           if (condition.test(element)) {
+               count++;
+           }
+       }
+
+       return count;
+   }
+
+   // Check whether a number is prime
+   public static boolean isPrime(Integer n) {
+       if (n<2)
+           return false;
+
+       for (int i = 2; i<= n / i; i++) {
+           if (n % i == 0)
+               return false;
+       }
+
+       return true;
+   }
+
+   // Check whether a number is a palindrome
+   public static boolean isPalindrome(Integer n) {
+       if (n<0)
+           return false;
+
+       int original = n;
+       int reverse = 0;
+
+       while (n>0) {
+           reverse = reverse * 10 + n % 10;
+           n /= 10;
+       }
+
+       return original == reverse;
+   }
+
+   public static void main(String[] args) {
+       Scanner sc = new Scanner(System.in);
+       List<Integer>numbers = new ArrayList<>();
+
+       System.out.print("Enter number of elements:");
+       int size = sc.nextInt();
+
+       System.out.println("Enter"+ size +"integers:");
+
+       for (int i = 0; i<size; i++) {
+           numbers.add(sc.nextInt());
+       }
+
+       int evenCount = countElements(
+               numbers, n ->n % 2 == 0);
+
+       int oddCount = countElements(
+               numbers, n ->n % 2 != 0);
+
+       int primeCount = countElements(
+               numbers, p7::isPrime);
+
+       int palindromeCount = countElements(
+               numbers, p7::isPalindrome);
+
+       System.out.println("\nNumbers:"+ numbers);
+       System.out.println("Even numbers count:"+ evenCount);
+       System.out.println("Odd numbers count:"+ oddCount);
+       System.out.println("Prime numbers count:"+ primeCount);
+       System.out.println("Palindrome numbers count:"
+               + palindromeCount);
+
+       sc.close();
+   }
+}
